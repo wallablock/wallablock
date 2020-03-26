@@ -1,0 +1,19 @@
+{
+  "name": "dbsyncer",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/app.js",
+  "scripts": {
+    "start": "npm run build && node dist/app.js",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "The Wallablock team",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "wb-blockchain": "file:../wb-blockchain"
+  }
+}
