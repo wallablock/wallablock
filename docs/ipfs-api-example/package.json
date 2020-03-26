@@ -1,0 +1,17 @@
+{
+  "name": "ipfs-api-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "The Wallablock team",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "express": "^4.17.1",
+    "llibreria": "file:../../wb-ipfs",
+    "wb-ipfs": "file:../../wb-ipfs"
+  }
+}
