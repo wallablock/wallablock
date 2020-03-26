@@ -11,3 +11,5 @@ async function start() {
     let syncUpdates = await blockchain.resync(syncedUntil);
     syncedUntil = syncUpdates.syncedToBlock;
 }
+
+start();
