@@ -1,14 +1,14 @@
 var express = require('express');
-var ipfs = require('wb-ipfs')
+var ipfs = require('./ipfs')
 var app = express();
 app.get('/', function (req, res) {
-    let ip = "192.168.1.20";
+    let ip = "";
     let hash = "";
-    res.writeHead(200);
+    res.setHeader('Content-Type', 'text/html');
     ipfs.IPFSread(ip,hash).then(links => {
         console.log(links);
         links.forEach((item, i) => {
-            res.write('<img src='+item+'>');
+            res.write(`<img src=${item}></img>`);
         });
         res.end();
     }).catch(err => {
