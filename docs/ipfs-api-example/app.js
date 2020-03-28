@@ -1,5 +1,5 @@
 var express = require('express');
-var ipfs = require('./ipfs')
+var ipfs = require('wb-ipfs')
 var app = express();
 app.get('/', function (req, res) {
     let ip = "";
