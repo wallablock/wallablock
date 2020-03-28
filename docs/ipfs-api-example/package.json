@@ -12,6 +12,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "llibreria": "file:../../wb-ipfs",
+    "request": "^2.88.2",
     "wb-ipfs": "file:../../wb-ipfs"
   }
 }
