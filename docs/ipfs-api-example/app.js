@@ -15,6 +15,9 @@ app.get('/', function (req, res) {
     }).catch(err => {
             console.log('Got error from IPFSread', err);
     });
+    /*let path = "";
+    let res = await ipfs.IPFSwrite(ip,path);
+    console.log(res);*/
 });
 app.listen(3000, function () {
     console.log('Example app listening on port 3000!');
