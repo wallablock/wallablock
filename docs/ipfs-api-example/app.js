@@ -4,7 +4,7 @@ var app = express();
 
 app.get('/', function (req, res) {
     let ip = "127.0.0.1";
-    
+    let hash = "QmNrnUY9Fn9B3egTUHDdHQL366xfaPPXiD5KJ78EDRQdSZ"
     //Exemple lectura
     res.setHeader('Content-Type', 'text/html');
     ipfs.IPFSread(ip,hash).then(links => {
