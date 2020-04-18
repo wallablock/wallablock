@@ -1,30 +1,46 @@
-var express = require('express');
-var ipfs = require('wb-ipfs');
-var app = express();
+var express = require("express");
+var ipfs = require("wb-ipfs");
+// With ES2015 imports, the following is recommended:
+// import { IpfsConnection } from "wb-ipfs";
 
-app.get('/', function (req, res) {
-    let ip = "192.168.1.20";
-    let ipfsConnection = new ipfs.IpfsConnection(ip);
-    let hash = "QmcxAke8tG6cNJiZCqQoZvTE2yDoJu95VJ9KSQKYdkgcCm"
-    //Exemple lectura
-    res.setHeader('Content-Type', 'text/html');
-    ipfsConnection.read(hash).then(links => {
-        console.log(links);
-        links.forEach((item, i) => {
-            res.write(`<img src=${item}></img></br>`);
-        });
-        res.end();
-    }).catch(err => {
-            console.log('Got error from IPFSread', err);
-    });
+const ipfsNodeIp = "127.0.0.1";
 
-    //Exemple escriptura (funciona unicament si hi ha un node IPFS a localhost)
-    /*let path = "";
-    ipfs.IPFSwrite(ip,path).then(ret => {
-        console.log(ret);
-    }).catch(err => {
-        console.log(err)
-    });*/
+let app = express();
+
+let ipfsConnection = new ipfs.IpfsConnection(ipfsNodeIp);
+const hash = "QmNrnUY9Fn9B3egTUHDdHQL366xfaPPXiD5KJ78EDRQdSZ";
+
+app.get("/read", async function(_req, res, next) {
+    // Read Example
+    let links;
+    try {
+        links = await ipfsConnection.read(hash);
+    } catch (err) {
+        console.error("Error from IPFS.read:", err);
+        // Passes error to Express so it can return it with a 500 Server Error status
+        return next(`Error: ${err}`);
+    }
+    res.setHeader("Content-Type", "text/html");
+    for (let item of links) {
+        res.write(`<img src=${item}></img><br />`);
+    }
+    res.end();
+});
+
+app.get("/write", async function(_req, res, next) {
+    // Write example. Only if IPFS is at localhost
+    const path = "";
+    let ret;
+    try {
+        ret = await ipfsConnection.write(path);
+    } catch (err) {
+        console.error("Error from IPFS.write:", err);
+        return next(`Error: ${err}`);
+    }
+    res.setHeader("Content-Type", "text/html");
+    res.send(ret);
+    res.end();
+    ipfsConnection.write(path);
 });
 
 app.listen(3000, function () {
