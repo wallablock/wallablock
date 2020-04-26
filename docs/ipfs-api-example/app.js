@@ -3,12 +3,26 @@ var ipfs = require("wb-ipfs");
 // With ES2015 imports, the following is recommended:
 // import { IpfsConnection } from "wb-ipfs";
 
-const ipfsNodeIp = "127.0.0.1";
+const ipfsNodeIp = "127.0.0.1:3000";
 
 let app = express();
 
 let ipfsConnection = new ipfs.IpfsConnection(ipfsNodeIp);
-const hash = "QmNrnUY9Fn9B3egTUHDdHQL366xfaPPXiD5KJ78EDRQdSZ";
+const hash = "Qmd57pfbufqvXHwfDKbXkow8TGJFLL49ugbcxn5DxTo7ac";
+
+app.get("/readCover", async function(_req, res, next) {
+    let link;
+    try {
+        link = await ipfsConnection.coverUrl(hash);
+    } catch (err) {
+        console.error("Error from readCover:", err);
+        return next(`Error: ${err}`);
+    }
+    console.log(link);
+    res.setHeader("Content-Type", "text/html");
+    res.write(`<img src=${link}></img><br />`);
+    res.end();
+});
 
 app.get("/read", async function(_req, res, next) {
     // Read Example
@@ -43,6 +57,6 @@ app.get("/write", async function(_req, res, next) {
     ipfsConnection.write(path);
 });
 
-app.listen(3000, function () {
-    console.log('Example app listening on port 3000!');
+app.listen(3030, function () {
+    console.log('Example app listening on port 3030!');
 });
