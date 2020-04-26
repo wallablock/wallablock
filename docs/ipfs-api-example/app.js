@@ -3,12 +3,12 @@ var ipfs = require("wb-ipfs");
 // With ES2015 imports, the following is recommended:
 // import { IpfsConnection } from "wb-ipfs";
 
-const ipfsNodeIp = "127.0.0.1:3000";
+const ipfsNodeIp = "http://127.0.0.1:3000";
 
 let app = express();
 
 let ipfsConnection = new ipfs.IpfsConnection(ipfsNodeIp);
-const hash = "Qmd57pfbufqvXHwfDKbXkow8TGJFLL49ugbcxn5DxTo7ac";
+const hash = "QmbePkW1YjkFrLcW9T6hyRmWWdmyEwDpDc2R7u3Nq1sMVr";
 
 app.get("/readCover", async function(_req, res, next) {
     let link;
@@ -18,19 +18,31 @@ app.get("/readCover", async function(_req, res, next) {
         console.error("Error from readCover:", err);
         return next(`Error: ${err}`);
     }
-    console.log(link);
     res.setHeader("Content-Type", "text/html");
     res.write(`<img src=${link}></img><br />`);
     res.end();
 });
 
-app.get("/read", async function(_req, res, next) {
+app.get("/readDesc", async function(_req, res, next) {
+    let desc;
+    try {
+        desc = await ipfsConnection.fetchDesc(hash);
+    } catch (err) {
+        console.error("Error from fetchCover:", err);
+        return next(`Error: ${err}`);
+    }
+    res.setHeader("Content-Type", "text/html");
+    res.write(`<p1>${desc}</p1>`);
+    res.end();
+});
+
+app.get("/readImages", async function(_req, res, next) {
     // Read Example
     let links;
     try {
-        links = await ipfsConnection.read(hash);
+        links = await ipfsConnection.getAllImagesUrl(hash);
     } catch (err) {
-        console.error("Error from IPFS.read:", err);
+        console.error("Error from getAllImagesUrl:", err);
         // Passes error to Express so it can return it with a 500 Server Error status
         return next(`Error: ${err}`);
     }
