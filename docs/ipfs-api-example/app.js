@@ -3,12 +3,12 @@ var ipfs = require("wb-ipfs");
 // With ES2015 imports, the following is recommended:
 // import { IpfsConnection } from "wb-ipfs";
 
-const ipfsNodeIp = "http://127.0.0.1:3000";
+const ipfsNodeIp = "http://192.168.1.20:3000";
 
 let app = express();
 
 let ipfsConnection = new ipfs.IpfsConnection(ipfsNodeIp);
-const hash = "QmbePkW1YjkFrLcW9T6hyRmWWdmyEwDpDc2R7u3Nq1sMVr";
+const hash = "QmPwn2M19Li41k6v8r4WnERiiPFLw93mceGaafMbSjduF8";
 
 app.get("/readCover", async function(_req, res, next) {
     let link;
@@ -54,19 +54,17 @@ app.get("/readImages", async function(_req, res, next) {
 });
 
 app.get("/write", async function(_req, res, next) {
-    // Write example. Only if IPFS is at localhost
-    const path = "";
-    let ret;
-    try {
-        ret = await ipfsConnection.write(path);
-    } catch (err) {
-        console.error("Error from IPFS.write:", err);
-        return next(`Error: ${err}`);
-    }
+    console.log("funciona");
     res.setHeader("Content-Type", "text/html");
-    res.send(ret);
+    res.write(`<html>
+        <body>
+        <form action="${ipfsNodeIp}/wb/upload" method="post" enctype="multipart/form-data">
+          <input type="file" id="files" name="files" multiple><br><br>
+          <input type="submit">
+        </form>
+        </body>
+        </html>`);
     res.end();
-    ipfsConnection.write(path);
 });
 
 app.listen(3030, function () {
