@@ -3,12 +3,12 @@ var ipfs = require("wb-ipfs");
 // With ES2015 imports, the following is recommended:
 // import { IpfsConnection } from "wb-ipfs";
 
-const ipfsNodeIp = "http://192.168.1.20:3000";
+const ipfsNodeIp = "http://127.0.0.1:3000";
 
 let app = express();
 
 let ipfsConnection = new ipfs.IpfsConnection(ipfsNodeIp);
-const hash = "QmPwn2M19Li41k6v8r4WnERiiPFLw93mceGaafMbSjduF8";
+const hash = "QmbePkW1YjkFrLcW7T6hyRmWWdmyEwDpDc2R7u3Nq1sMVr";
 
 app.get("/readCover", async function (_req, res, next) {
   let link;
@@ -20,6 +20,18 @@ app.get("/readCover", async function (_req, res, next) {
   }
   res.setHeader("Content-Type", "text/html");
   res.write(`<img src=${link}></img><br />`);
+  res.end();
+});
+
+app.get("/delete", async function (_req, res, next) {
+  let link;
+  try {
+    link = await ipfsConnection.delete(hash);
+  } catch (err) {
+    console.error("Error from delete:", err);
+    return next(`Error: ${err}`);
+  }
+  res.sendStatus(200);
   res.end();
 });
 
