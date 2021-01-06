@@ -12,7 +12,7 @@
   "author": "The Wallablock team",
   "license": "UNLICENSED",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "express": "^4.17.1",
     "wb-ipfs": "git+https://github.com/wallablock/wb-ipfs.git"
   },
